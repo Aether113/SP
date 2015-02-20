@@ -1,4 +1,0 @@
-total 16
--rwxr-xr-x 1 aether aether 8512 Feb 17 16:40 a.out
--rw-r--r-- 1 aether aether    0 Feb 17 16:40 files.txt
--rw-r--r-- 1 aether aether  177 Feb 17 16:40 main.c
