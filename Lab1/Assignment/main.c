@@ -14,7 +14,7 @@ int main()
     srand(time(NULL));
 
     double rand_temp = ((double)rand()/(double)RAND_MAX)*60-20;
-    printf("Temperature is %.2f @ ", rand_temp);
+    printf("Temperature = %.2f @ ", rand_temp);
     fflush(stdout);
     system("date\n");
     sleep(5);
