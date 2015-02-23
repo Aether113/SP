@@ -1,10 +1,12 @@
 #include <stdio.h>
 
+//Structuur voor een datum, juist.
 typedef struct
 {
   short day, month;
   unsigned year;
 } date_t;
+
 
 void date_struct( int day, int month, int year, date_t *date) {
   date_t dummy;
@@ -15,11 +17,11 @@ void date_struct( int day, int month, int year, date_t *date) {
 }
 
 int main( void ) {
-  int day, month, year;
+
   date_t d;
   printf("\nGive day, month, year:");
-  scanf("%d %d %d", &day, &month, &year);
-  date_struct( day, month, year, &d);
-  printf("\ndate struct values: %u-%u-%u\n", d.day, d.month, d.year);
+  scanf("%hd %hd %d", &d.day, &d.month, &d.year);
+  date_struct( d.day, d.month, d.year, &d);
+  printf("\ndate struct values: %hu-%hu-%u\n", d.day, d.month, d.year);
   return 0;
 }
