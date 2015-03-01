@@ -1,7 +1,6 @@
 
 #include <ctype.h>
 #include <stdio.h>
-#include <math.h>
 
 #define BYTES_A_ROW         ((int)10)
 #define ADDR_COLUMN_WIDTH   ((int)(2*sizeof(unsigned char *)))  //num bytes of a pointer * 2 char; (1 byte = hex 2 chars)
@@ -25,11 +24,10 @@ int main( int argc, char *argv[] )
     printf("FYI: address of argc: %p\n", &argc );
     printf("FYI: address of first local variable of main(): %p\n", &first_var );
 
-    // read start address and memory size
     printf("\nEnter start address <hex-notation> of dump: " );
-    scanf("%lX", &start_addr);
+    scanf(" %lX", &start_addr);
     printf("\nEnter number of bytes to dump <negative or positive value>:");
-    scanf("%d", &bytes_to_dump);
+    scanf(" %d", &bytes_to_dump);
 
     // print table header
     printf("\n%-*s", ADDR_COLUMN_WIDTH, "Address");
@@ -48,22 +46,65 @@ int main( int argc, char *argv[] )
         printf("-");
     printf("\n");
 
+    // read start address and memory size
+
+    if(bytes_to_dump > 0){
+      while(bytes_to_dump > 0){
+        printf("%-*lX",ADDR_COLUMN_WIDTH, start_addr);
+        printf("%s", COLUMN_SEPARATOR);
+        if(bytes_to_dump > 10){
+          for(i = 0; i < 10; i++ ){
+            ptr = (byte_t*)start_addr;
+            printf("%.2X ", *(ptr+i));
+          }
+
+          printf("%s", COLUMN_SEPARATOR);
+          for(i = 0; i < 10; i++){
+            char temp[1];
+            ptr = (byte_t*)start_addr;
+            if(*(ptr+i) < 128){
+            sprintf(temp, "%c", *(ptr+i));
+            printf("%s", temp);
+            }
+            else{
+              printf(".");
+            }
+          }
+
+          bytes_to_dump = bytes_to_dump -10;
+          start_addr = start_addr + 10;
+        }
+
+        else
+        {
+          for(i = 0; i < bytes_to_dump; i++){
+            ptr = (byte_t*)start_addr;
+            printf("%X ", *(ptr+i));
+          }
+          printf("%s", COLUMN_SEPARATOR);
+          for(i = 0; i < bytes_to_dump; i++){
+            char temp[1];
+            ptr = (byte_t*)start_addr;
+            if(*(ptr+i) < 128){
+            sprintf(temp, "%c", *(ptr+i));
+            printf("%s", temp);
+            }
+            else{
+              printf(".");
+            }
+          }
+
+          break;
+        }
+        printf("\n");
+      }
+    }
+
+
+    else{
+    }
 
     // memory dump code
-
-
-    if(bytes_to_dump >= 0){
-      printf("0X%-*lX", ADDR_COLUMN_WIDTH, start_addr);
-      printf("%s", COLUMN_SEPARATOR);
-        //for(j = 0; j < 10; j++){
-          //ptr = (byte_t*)start_addr + j;
-          //printf("%02x",*ptr);
-        //}
-    }
-    else{
-      printf("Negative");
-    }
-
 
 
     // ...
