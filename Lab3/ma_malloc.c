@@ -33,6 +33,7 @@ void* ma_malloc(size tsize){
     }
     else{
       //Moet wrs niet tsize zijn maar waarde van k
+      //want tsize = nieuwe size
       memory_block[i] = 'F';
       memory_block[i+1] = tsize%10/1;
       tsize = tsize - tsize%10;
