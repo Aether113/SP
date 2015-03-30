@@ -34,20 +34,20 @@ int main( void )
 //   free(a);
 //   free(b);
 //   free(c);
-  
+
   return 0;
 }
 
 
 
 /*
- * Implement here private functions to copy, to print and to destroy an element. Do you understand why you need these functions? 
- * Later you will learn how you could avoid this by using funtion pointers. 
- * 
+ * Implement here private functions to copy, to print and to destroy an element. Do you understand why you need these functions?
+ * Later you will learn how you could avoid this by using funtion pointers.
+ *
  */
 
 /*
- * Print 1 element to stdout. 
+ * Print 1 element to stdout.
  * If the defition of element_t changes, then this code needs to change as well.
  */
 void element_print(element_t element)
@@ -74,4 +74,3 @@ void element_free(element_t *element)
 {
   // implementation goes here
 }
-
