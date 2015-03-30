@@ -39,11 +39,17 @@ void queue_free(queue_t** queue){
   free(*queue);
 }
 
-void queue_enqueue(queue_t* queue, element_t element)
+void queue_enqueue(queue_t* queue, element_t element)     // ALGORITME UITWERKEN
 {
   if(queue->current_size == QUEUE_SIZE){
     printf("Queue is full, cannot add element [%d]\n", element);
   }
+
+  else if(queue->rear == queue->front){
+    printf("Queue is full, cannot add element [%d]\n", element);
+  }
+
+  else if
 
   else{
     queue->current_size++;
@@ -68,6 +74,8 @@ void queue_dequeue(queue_t* queue){
   if(queue->current_size == 0){
     printf("No elements currently in queue\n");
   }
+
+
 }
 
 void queue_print(queue_t *queue){
