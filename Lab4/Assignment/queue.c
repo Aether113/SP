@@ -42,7 +42,7 @@ void queue_free(queue_t** queue){
 void queue_enqueue(queue_t* queue, element_t element)     // inspiration for algorithm: http://scanftree.com/Data_Structure/circular-queue
 {
   if(((queue->front == 0) && (queue->rear == QUEUE_SIZE - 1)) || (queue->front == (queue->rear+1))){
-    printf("Queue is full, cannot add element: %d", element);
+    printf("Queue is full, cannot add element: %d\n\n", element);
   }
 
   else{
@@ -77,7 +77,7 @@ element_t* queue_top(queue_t* queue){
 void queue_dequeue(queue_t* queue){
 
   if(queue->front == -1){
-    printf("No elements in queue to dequeue");
+    printf("No elements in queue to dequeue\n");
   }
 
   else{
@@ -100,21 +100,17 @@ void queue_dequeue(queue_t* queue){
 
 void queue_print(queue_t *queue){
   int i, index;
-
-  if(queue->current_size ==  0){
-    printf("No elements in queue to print\n");
-  }
+  i = 0; index = queue->front;
 
   for(i = 0; i < queue->current_size; i++){
-
-    if(queue->front == QUEUE_SIZE -1){
-      index = -1;
+    printf("Element [%d]: %d\n", index, queue->arr[index]);
+    if(index == QUEUE_SIZE - 1){
+      index = 0;
     }
 
     else{
-      index = index + 1;
+      index++;
     }
-    printf("Element [%d]: %d\n", index, queue->arr[index]);
   }
   printf("\nQueue size: %d\tFront: %d\tRear: %d\n\n", queue->current_size, queue->front, queue->rear);
 }

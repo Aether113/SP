@@ -1,47 +1,18 @@
-void queue_enqueue(queue_t* queue, element_t element)     // inspiration for algorithm: http://scanftree.com/Data_Structure/circular-queue
-{
-  if(((queue->front == 0) && (queue->rear == QUEUE_SIZE - 1)) || (queue->front == (queue->rear+1))){
-    printf("")
-  }
+void queue_print(queue_t *queue){
+  int i, index;
+  i = 0; index = 0;
 
-  else{
-    if((queue->rear == -1) && (queue->front) == -1){
-      queue->rear = 0;
-      queue->front = 0;
-    }
-
-    else if(queue->rear == QUEUE_SIZE - 1){
-      queue->rear = 0;
+  for(int i; i < queue->current_size; i++){
+    index = queue->index;
+    if(index = QUEUE_SIZE - 1){
+      index = 0;
     }
 
     else{
-      queue->rear++;
+      index++;
     }
 
-    queue->arr[queue->rear] = element;
-    queue->current_size++;
-  }
-}
+    printf("Element [%d]: %d\n", index, queue->arr[index]);
 
-void queue_dequeue(queue_t* queue){
-
-  if(queue->front == -1){
-    Printf("No elements in queue to dequeue");
-  }
-
-  else{
-
-    if(queue->front == queue->rear){      // all elements are gone, reinitialise
-      queue->front = 0;
-      queue->rear = 0;
-    }
-
-    else if(queue->front == QUEUE_SIZE - 1){ //IF front at end --> 0
-      queue->front = 0;
-    }
-
-    else{
-      queue->front++;
-    }
   }
 }
