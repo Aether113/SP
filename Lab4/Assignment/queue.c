@@ -21,47 +21,49 @@ struct queue {
 
 
 queue_t* queue_create(){
-  struct queue *my_queue = malloc(sizeof(struct queue));
+  struct queue *queue = malloc(sizeof(struct queue));
 
-  if(my_queue == 0){  //check if memory available
+  if(queue == 0){  //check if memory available
     printf("Out of memory\n");
     return NULL;
   }
 
-  my_queue -> current_size = 0;
-  my_queue -> front = -1;
-  my_queue -> rear = -1;
-  my_queue -> arr = malloc(QUEUE_SIZE*sizeof(element_t));
-  return my_queue;
+  queue -> current_size = 0;
+  queue -> front = -1;
+  queue -> rear = -1;
+  queue -> arr = malloc(QUEUE_SIZE*sizeof(element_t));
+  return queue;
 }
 
 void queue_free(queue_t** queue){
   free(*queue);
 }
 
-void queue_enqueue(queue_t* queue, element_t element)     // ALGORITME UITWERKEN
+void queue_enqueue(queue_t* queue, element_t element)     // inspiration for algorithm: http://scanftree.com/Data_Structure/circular-queue
 {
-
-  if((queue->front == -1) && (queue->rear == -1)){            //Initial queue.
-    queue->rear = 0;
-    queue->front = 0;
-    queue->current_size++;
-  }
-
-  else if(queue->current_size == QUEUE_SIZE){
-    printf("Queue is full, cannot add element [%d]\n", element);
-  }
-
-  else if(queue->rear == QUEUE_SIZE - 1){
-    queue->rear = 0;
+  if(((queue->front == 0) && (queue->rear == QUEUE_SIZE - 1)) || (queue->front == (queue->rear+1))){
+    printf("Queue is full, cannot add element: %d", element);
   }
 
   else{
-    queue->rear++;
+    if((queue->rear == -1) && (queue->front) == -1){
+      queue->rear = 0;
+      queue->front = 0;
+    }
+
+    else if(queue->rear == QUEUE_SIZE - 1){
+      queue->rear = 0;
+    }
+
+    else{
+      queue->rear++;
+    }
+
+    queue->arr[queue->rear] = element;
     queue->current_size++;
   }
-  queue->arr[queue->rear] = element;
 }
+
 
 int queue_size(queue_t* queue){
   return queue->current_size;
@@ -74,36 +76,45 @@ element_t* queue_top(queue_t* queue){
 
 void queue_dequeue(queue_t* queue){
 
-  if(queue->current_size != 0){
-    if(queue->front == QUEUE_SIZE - 1){   //TODO: Checken met rear = 0;
-        queue->front = 0;
+  if(queue->front == -1){
+    printf("No elements in queue to dequeue");
+  }
+
+  else{
+    queue->current_size--;
+    if(queue->front == queue->rear){      // all elements are gone, reinitialise
+      queue->front = -1;
+      queue->rear = -1;
+      queue->current_size = 0;
+    }
+
+    else if(queue->front == QUEUE_SIZE - 1){ //IF front at end --> 0
+      queue->front = 0;
     }
 
     else{
       queue->front++;
     }
-    queue->current_size--;
-  }
-
-  else{
-
   }
 }
 
 void queue_print(queue_t *queue){
-  int i;
-  if(queue->current_size == 0){
-    printf("There are currently no elements in the queue\n");
+  int i, index;
+
+  if(queue->current_size ==  0){
+    printf("No elements in queue to print\n");
   }
 
-  else{
-    for(i = 0; i < queue->current_size; i++){
-      if(queue->front == QUEUE_SIZE){
-        queue->front = 0;
-      }
+  for(i = 0; i < queue->current_size; i++){
 
-      printf("Element #%d: %d\n", i, queue->arr[queue->front+i]);
+    if(queue->front == QUEUE_SIZE -1){
+      index = -1;
     }
-    printf("\nQueue size: %d\tFront: %d\tRear: %d\n\n", queue->current_size,queue->front, queue->rear);
+
+    else{
+      index = index + 1;
+    }
+    printf("Element [%d]: %d\n", index, queue->arr[index]);
   }
+  printf("\nQueue size: %d\tFront: %d\tRear: %d\n\n", queue->current_size, queue->front, queue->rear);
 }

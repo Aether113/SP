@@ -31,13 +31,13 @@ int main( void )
   queue_dequeue(queue);
   queue_print(queue);
   queue_dequeue(queue);
+  queue_enqueue(queue, 10);
   queue_print(queue);
-  queue_dequeue(queue);
+  queue_enqueue(queue, 20);
   queue_print(queue);
-  queue_dequeue(queue);
-  queue_enqueue(queue, 6);
+  queue_enqueue(queue, 30);
   queue_print(queue);
-  queue_free(&queue);
+
 //   free(a);
 //   free(b);
 //   free(c);
