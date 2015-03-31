@@ -41,24 +41,26 @@ void queue_free(queue_t** queue){
 
 void queue_enqueue(queue_t* queue, element_t element)     // ALGORITME UITWERKEN
 {
-  if(queue->current_size == QUEUE_SIZE){
+
+  if((queue->front == -1) && (queue->rear == -1)){            //Initial queue.
+    queue->rear = 0;
+    queue->front = 0;
+    queue->current_size++;
+  }
+
+  else if(queue->current_size == QUEUE_SIZE){
     printf("Queue is full, cannot add element [%d]\n", element);
   }
 
-  else if(queue->rear == queue->front){
-    printf("Queue is full, cannot add element [%d]\n", element);
+  else if(queue->rear == QUEUE_SIZE - 1){
+    queue->rear = 0;
   }
-
-  else if
 
   else{
-    queue->current_size++;
     queue->rear++;
-    queue->arr[queue->rear] = element;
-    if(queue->front == -1){
-      queue->front = 0;
-    }
+    queue->current_size++;
   }
+  queue->arr[queue->rear] = element;
 }
 
 int queue_size(queue_t* queue){
@@ -71,11 +73,21 @@ element_t* queue_top(queue_t* queue){
 }
 
 void queue_dequeue(queue_t* queue){
-  if(queue->current_size == 0){
-    printf("No elements currently in queue\n");
+
+  if(queue->current_size != 0){
+    if(queue->front == QUEUE_SIZE - 1){   //TODO: Checken met rear = 0;
+        queue->front = 0;
+    }
+
+    else{
+      queue->front++;
+    }
+    queue->current_size--;
   }
 
+  else{
 
+  }
 }
 
 void queue_print(queue_t *queue){
@@ -86,7 +98,12 @@ void queue_print(queue_t *queue){
 
   else{
     for(i = 0; i < queue->current_size; i++){
-      printf("Element #%d: %d\n", i, queue->arr[i]);
+      if(queue->front == QUEUE_SIZE){
+        queue->front = 0;
+      }
+
+      printf("Element #%d: %d\n", i, queue->arr[queue->front+i]);
     }
+    printf("\nQueue size: %d\tFront: %d\tRear: %d\n\n", queue->current_size,queue->front, queue->rear);
   }
 }

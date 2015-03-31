@@ -19,6 +19,9 @@ int main( void )
   queue_enqueue(queue, 1);
   queue_enqueue(queue, 2);
   queue_enqueue(queue, 3);
+  queue_enqueue(queue, 4);
+  queue_enqueue(queue, 5);
+
 //   queue_enqueue(queue, a);
 //   queue_enqueue(queue, b);
 //   queue_enqueue(queue, b);
@@ -26,9 +29,13 @@ int main( void )
   queue_dequeue(queue);
   queue_print(queue);
   queue_dequeue(queue);
+  queue_print(queue);
   queue_dequeue(queue);
   queue_print(queue);
   queue_dequeue(queue);
+  queue_print(queue);
+  queue_dequeue(queue);
+  queue_enqueue(queue, 6);
   queue_print(queue);
   queue_free(&queue);
 //   free(a);
