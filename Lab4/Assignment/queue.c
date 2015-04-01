@@ -36,6 +36,7 @@ queue_t* queue_create(){
 }
 
 void queue_free(queue_t** queue){
+  free((*queue) -> arr);
   free(*queue);
 }
 
@@ -99,18 +100,25 @@ void queue_dequeue(queue_t* queue){
 }
 
 void queue_print(queue_t *queue){
-  int i, index;
-  i = 0; index = queue->front;
 
-  for(i = 0; i < queue->current_size; i++){
-    printf("Element [%d]: %d\n", index, queue->arr[index]);
-    if(index == QUEUE_SIZE - 1){
-      index = 0;
-    }
-
-    else{
-      index++;
-    }
+  if(queue == 0 || queue == NULL){
+    printf("No queue, returned NULL or 0");
   }
-  printf("\nQueue size: %d\tFront: %d\tRear: %d\n\n", queue->current_size, queue->front, queue->rear);
+
+  else{
+    int i, index;
+    i = 0; index = queue->front;
+
+    for(i = 0; i < queue->current_size; i++){
+      printf("Element [%d]: %d\n", index, queue->arr[index]);
+      if(index == QUEUE_SIZE - 1){
+        index = 0;
+      }
+
+      else{
+        index++;
+      }
+    }
+    printf("\nQueue size: %d\tFront: %d\tRear: %d\n\n", queue->current_size, queue->front, queue->rear);
+  }
 }

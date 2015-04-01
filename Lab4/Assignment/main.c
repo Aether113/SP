@@ -37,9 +37,8 @@ int main( void )
   queue_dequeue(queue);
   queue_dequeue(queue);
   queue_dequeue(queue);
-
-
-  queue_print(queue);
+  queue_free(&queue);
+  //queue_print(queue);
 
 //   free(a);
 //   free(b);
