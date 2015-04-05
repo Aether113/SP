@@ -25,7 +25,7 @@ void element_free(element_ptr_t *element)
 }
 
 /*
- * Print 1 element to stdout. 
+ * Print 1 element to stdout.
  */
 void element_print(element_ptr_t element)
 {
@@ -33,7 +33,7 @@ void element_print(element_ptr_t element)
 }
 
 /*
- * Compare two element elements; returns -1, 0 or 1 
+ * Compare two element elements; returns -1, 0 or 1
  */
 int element_compare(element_ptr_t x, element_ptr_t y)
 {
@@ -190,7 +190,7 @@ int main(void)
     tcase_add_test(tc1_1, test_ListGetReference);
 
     srunner_run_all(sr, CK_NORMAL);
-   
+
     nf = srunner_ntests_failed(sr);
     srunner_free(sr);
 
