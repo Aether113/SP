@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "list.h"
 
 
@@ -26,21 +27,22 @@ list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments
         ){
 
   list_t* list = malloc(sizeof(list_t));
-    if(list == NULL || list == 0){
+    if(list == NULL){
       list_errno = LIST_MEMORY_ERROR;
       return NULL;
     }
+
   list->size = 0;
   list->first_node = NULL;
   list->free = element_free;
-  list->copy = element_compy;
+  list->copy = element_copy;
   list->compare = element_compare;
   list->print = element_print;
   return list;
 }
 
 void list_free( list_ptr_t* list ){
-  return NULL;
+
 }
 
 int list_size( list_ptr_t list ){
@@ -78,5 +80,5 @@ element_ptr_t list_get_element_at_index( list_ptr_t list, int index ){
 }
 
 int list_get_index_of_element( list_ptr_t list, element_ptr_t element ){
-  return NULL;
+  return 0;
 }

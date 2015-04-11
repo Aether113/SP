@@ -12,7 +12,7 @@ int list_errno;
  */
 void element_copy(element_ptr_t *dest_element, element_ptr_t src_element)
 {
-  //...
+
 }
 
 
@@ -21,7 +21,6 @@ void element_copy(element_ptr_t *dest_element, element_ptr_t src_element)
  */
 void element_free(element_ptr_t *element)
 {
-  // ...
 }
 
 /*
@@ -29,7 +28,6 @@ void element_free(element_ptr_t *element)
  */
 void element_print(element_ptr_t element)
 {
- // ...
 }
 
 /*
@@ -37,7 +35,7 @@ void element_print(element_ptr_t element)
  */
 int element_compare(element_ptr_t x, element_ptr_t y)
 {
-  // ...
+  return 0;
 }
 
 
@@ -168,7 +166,7 @@ START_TEST(test_ListGetReference)
   list = list_insert_at_index(list,c,-1);
   //ck_assert_msg(list_get_reference_at_index(list,0) == list, "Failure: expected address:<%p> but was %p\n", list, list_get_reference_at_index(list,0));
   ck_assert_msg(list_get_reference_at_index(list,0) != list_get_reference_at_index(list,1), "Failure: two elements with same reference");
-  long int interval = (long int)list_get_reference_at_index(list,1) - (long int)list_get_reference_at_index(list,0);
+  //long int interval = (long int)list_get_reference_at_index(list,1) - (long int)list_get_reference_at_index(list,0);
   //ck_assert_msg(list_get_reference_at_index(list,10) == ((void*)list)+2*interval, "Failure: expected address:<%p> but was %p\n", ((void*)list)+2*interval, list_get_reference_at_index(list,10));
   list_free(&list);
 }
