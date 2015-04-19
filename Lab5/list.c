@@ -5,7 +5,7 @@
 
 struct list{
   int size;
-  list_node_t *first_node;
+  list_node_ptr_t first_node;
   void *free;
   void *copy;
   void *compare;
@@ -14,9 +14,9 @@ struct list{
 };
 
 struct list_node{
-  void *data;
-  struct list_node_t* next;
-  struct list_node_t* prev;
+  element_ptr_t data;
+  list_node_ptr_t next;
+  list_node_ptr_t prev;
 };
 
 list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments)
@@ -26,11 +26,11 @@ list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments
         void (*element_print)(element_ptr_t element)
         ){
 
-  list_t* list = malloc(sizeof(list_t));    // returned een pointer = list_ptr
-    if(list == NULL){
-      //list_errno = LIST_MEMORY_ERROR;
-      return NULL;
-    }
+  list_ptr_t list = malloc(sizeof(list_t));    // returned een pointer = list_ptr
+  if(list == NULL){
+    //list_errno = LIST_MEMORY_ERROR;
+    return NULL;
+  }
 
   list->size = 0;
   list->first_node = NULL;
@@ -38,29 +38,44 @@ list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments
   list->copy = element_copy;
   list->compare = element_compare;
   list->print = element_print;
-  return (list_ptr_t)list;
+  return list;
 }
 
 void list_free( list_ptr_t* list ){
-  
+  free(*list);
 }
 
 int list_size( list_ptr_t list ){
-  return 0;
+  return list->size;
 }
-/*Lab solution
+
 list_ptr_t list_insert_at_index( list_ptr_t list, element_ptr_t element, int index){
-  list_node_t* current_node = list_get_reference_at_index(list,index),
-  list_node_t* new_node = malloc(sizeof(list_node_t))
-  new_node->element = element;
-  new_node->next = current_node ->next;
-  new_node->prev = current_node
-  current_node ->next = new_node;
-  if(new_node->next != NULL){
-    new_node->next->prev = new_node;
+  list_node_ptr_t current_node = list_get_reference_at_index(list,index);
+  list_node_ptr_t new_node = malloc(sizeof(list_node_t));
+  if(new_node == NULL){
+    return NULL; //malloc fail
   }
+  new_node->data = element;        // data wordt ergens fout geassigned
+  if(current_node == NULL){        //for an empty list
+    new_node->next = NULL;
+    new_node->prev = NULL;
+    list->first_node = new_node;
+  }
+  
+  else{                           //list already has elements
+    new_node->next = current_node;
+    new_node->prev = current_node->prev;
+    current_node ->prev = new_node;
+    if(new_node->next != NULL){
+      new_node->next->prev = new_node;
+    }
+    if(list->first_node == current_node){
+      list->first_node = new_node;
+    }
+  }
+  list->size++;
   return list;
-}*/
+}	
 
 list_ptr_t list_remove_at_index( list_ptr_t list, int index){
   return NULL;
@@ -71,11 +86,51 @@ list_ptr_t list_free_at_index( list_ptr_t list, int index){
 }
 
 list_node_ptr_t list_get_reference_at_index( list_ptr_t list, int index ){
-  //list_node_t* first_node =
-  return NULL;
+
+  if(index <= 0){
+    return list->first_node;
+  }
+
+  else if(index >= list->size){
+    list_node_ptr_t current_node = list->first_node;
+    while(current_node->next != NULL){
+      current_node = current_node->next;
+    }
+    return current_node;
+  }
+
+  else{
+    list_node_ptr_t current_node = list->first_node;
+    int i = 0;
+    while(i < index){
+      current_node = current_node->next;
+      i++;
+    }
+    return current_node;
+  }
+  return NULL;   
 }
 
 element_ptr_t list_get_element_at_index( list_ptr_t list, int index ){
+  int i;
+  list_node_ptr_t current_node = list->first_node;
+  if(index <= 0){
+    return current_node;
+  }
+  
+  else if(index >= (list->size-1)){
+    while(current_node->next != NULL){
+      current_node = current_node->next;
+    }
+    return current_node;
+  }
+  
+  else{
+    for(i = 0; i < index; i++){
+      current_node = current_node->next;
+    }
+    return current_node;
+  }
   return NULL;
 }
 
