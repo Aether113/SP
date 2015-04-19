@@ -26,9 +26,9 @@ list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments
         void (*element_print)(element_ptr_t element)
         ){
 
-  list_t* list = malloc(sizeof(list_t));
+  list_t* list = malloc(sizeof(list_t));    // returned een pointer = list_ptr
     if(list == NULL){
-      list_errno = LIST_MEMORY_ERROR;
+      //list_errno = LIST_MEMORY_ERROR;
       return NULL;
     }
 
@@ -38,11 +38,11 @@ list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments
   list->copy = element_copy;
   list->compare = element_compare;
   list->print = element_print;
-  return list;
+  return (list_ptr_t)list;
 }
 
 void list_free( list_ptr_t* list ){
-
+  
 }
 
 int list_size( list_ptr_t list ){
