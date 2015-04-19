@@ -55,7 +55,7 @@ list_ptr_t list_insert_at_index( list_ptr_t list, element_ptr_t element, int ind
   if(new_node == NULL){
     return NULL; //malloc fail
   }
-  new_node->data = element;
+  new_node->data = element;        // data wordt ergens fout geassigned
   if(current_node == NULL){        //for an empty list
     new_node->next = NULL;
     new_node->prev = NULL;
@@ -65,9 +65,12 @@ list_ptr_t list_insert_at_index( list_ptr_t list, element_ptr_t element, int ind
   else{                           //list already has elements
     new_node->next = current_node;
     new_node->prev = current_node->prev;
-    current_node ->next = new_node;
+    current_node ->prev = new_node;
     if(new_node->next != NULL){
       new_node->next->prev = new_node;
+    }
+    if(list->first_node == current_node){
+      list->first_node = new_node;
     }
   }
   list->size++;
@@ -88,12 +91,12 @@ list_node_ptr_t list_get_reference_at_index( list_ptr_t list, int index ){
     return list->first_node;
   }
 
-  else if(index > (list->size) - 1){
+  else if(index >= list->size){
     list_node_ptr_t current_node = list->first_node;
     while(current_node->next != NULL){
       current_node = current_node->next;
-      return current_node;
     }
+    return current_node;
   }
 
   else{
@@ -109,12 +112,26 @@ list_node_ptr_t list_get_reference_at_index( list_ptr_t list, int index ){
 }
 
 element_ptr_t list_get_element_at_index( list_ptr_t list, int index ){
-  int i = 0;
+  int i;
   list_node_ptr_t current_node = list->first_node;
-  while(i < index){
-    current_node = current_node->next;
+  if(index <= 0){
+    return current_node;
   }
-  return current_node->data;
+  
+  else if(index >= (list->size-1)){
+    while(current_node->next != NULL){
+      current_node = current_node->next;
+    }
+    return current_node;
+  }
+  
+  else{
+    for(i = 0; i < index; i++){
+      current_node = current_node->next;
+    }
+    return current_node;
+  }
+  return NULL;
 }
 
 int list_get_index_of_element( list_ptr_t list, element_ptr_t element ){
