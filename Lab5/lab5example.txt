@@ -14,3 +14,31 @@ list_ptr_t list_insert_at_index( list_ptr_t list, element_ptr_t element, int ind
   return list;
 }*/
 
+//fout  V   //
+
+  list_node_ptr_t current_node = list_get_reference_at_index(list,index);
+  list_node_ptr_t new_node = malloc(sizeof(list_node_t));
+  if(new_node == NULL){
+    return NULL; //malloc fail
+  }
+  new_node->data = element;        // data wordt ergens fout geassigned
+  if(current_node == NULL){        //for an empty list
+    new_node->next = NULL;
+    new_node->prev = NULL;
+    list->first_node = new_node;
+    printf("First node= %d\n", list->first_node);
+  }
+  
+  else{                           //list already has elements
+    new_node->next = current_node;
+    new_node->prev = current_node->prev;
+    current_node ->prev = new_node;
+    if(new_node->next != NULL){
+      new_node->next->prev = new_node;
+    }
+    if(list->first_node == current_node){
+      list->first_node = new_node;
+    }
+  }
+  list->size++;
+  return list;

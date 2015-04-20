@@ -148,7 +148,7 @@ element_ptr_t list_get_element_at_index( list_ptr_t list, int index ){
   return NULL;
 }
 
-int list_get_index_of_element( list_ptr_t list, element_ptr_t element ){
+int list_get_index_of_element(list_ptr_t list, element_ptr_t element ){
   int i = 0;
   list_node_ptr_t current_node = list->first_node;
   while(current_node->data != element){
