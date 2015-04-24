@@ -11,6 +11,7 @@
  * If the table existed, clear up the existing data if clear_up_flag is set to 1
  * return the connection for success, NULL if an error occurs
  */
+
 MYSQL *init_connection(char clear_up_flag){
   MYSQL *conn = mysql_init(NULL);
   if (conn == NULL){
@@ -52,8 +53,12 @@ void disconnect(MYSQL *conn){
  */
 
 int insert_sensor(MYSQL *conn, sensor_id_t id, sensor_value_t value, sensor_ts_t ts){
-  char buffer[1024];
-  sprintf(buffer, "INSERT INTO jens_vangindertael(sensor_id, sensor_value, timestamp) VALUES(%d,%e,%d);", id, value, ts);
+  char buffer[512];
+  char date_buffer[26];
+  struct tm* tm_info;
+
+  strftime(date_buffer, 26, "%Y-%m-%d %H:%M:%S", localtime(&ts));
+  sprintf(buffer, "INSERT INTO jens_vangindertael(sensor_id, sensor_value, timestamp) VALUES(%d, %e, '%s')", id, value, date_buffer);
   if(mysql_query(conn, buffer)){
     fprintf(stderr, "%s\n", mysql_error(conn));
     return 1;
@@ -76,7 +81,13 @@ int insert_sensor_from_file(MYSQL *conn, FILE *sensor_data){
  */
 
 MYSQL_RES *find_sensor_all(MYSQL *conn){
-  return NULL;
+  MYSQL_RES *data;
+  if(mysql_query(conn, "SELECT * FROM jens_vangindertael;" )){
+    fprintf(stderr, "%s\n", mysql_error(conn));
+    return NULL;
+  }
+  data = mysql_store_result(conn);
+  return data;
 }
 
 /*
@@ -85,7 +96,15 @@ MYSQL_RES *find_sensor_all(MYSQL *conn){
  */
 
 MYSQL_RES *find_sensor_by_value(MYSQL *conn, sensor_value_t value_t){
-  return NULL;
+  char buffer[512];
+  MYSQL_RES *data;
+  sprintf(buffer, "SELECT * FROM jens_vangindertael WHERE sensor_value = '%f';", value_t);
+  if(mysql_query(conn, buffer )){
+    fprintf(stderr, "%s\n", mysql_error(conn));
+    return NULL;
+  }
+  data = mysql_store_result(conn);
+  return data;
 }
 
 /*
@@ -93,7 +112,15 @@ MYSQL_RES *find_sensor_by_value(MYSQL *conn, sensor_value_t value_t){
  * return MYSQL_RES with all the results
  */
 MYSQL_RES *find_sensor_exceed_value(MYSQL *conn, sensor_value_t value_t){
-  return NULL;
+  char buffer[512];
+  MYSQL_RES *data;
+  sprintf(buffer, "SELECT * FROM jens_vangindertael WHERE sensor_value > '%f';", value_t);
+  if(mysql_query(conn, buffer )){
+    fprintf(stderr, "%s\n", mysql_error(conn));
+    return NULL;
+  }
+  data = mysql_store_result(conn);
+  return data;
 }
 
 /*
@@ -101,7 +128,17 @@ MYSQL_RES *find_sensor_exceed_value(MYSQL *conn, sensor_value_t value_t){
  * return MYSQL_RES with all the results
  */
 MYSQL_RES *find_sensor_by_timestamp(MYSQL *conn, sensor_ts_t ts_t){
-  return NULL;
+  char buffer[512];
+  char date_buffer[26];
+  MYSQL_RES *data;
+  strftime(date_buffer, 26, "%Y-%m-%d %H:%M:%S", localtime(&ts_t));
+  sprintf(buffer, "SELECT * FROM jens_vangindertael WHERE timestamp = '%s'", date_buffer);
+  if(mysql_query(conn, buffer)){
+    fprintf(stderr, "%s\n", mysql_error(conn));
+    return NULL;
+  }
+  data = mysql_store_result(conn);
+  return data;
 }
 
 /*
@@ -109,14 +146,24 @@ MYSQL_RES *find_sensor_by_timestamp(MYSQL *conn, sensor_ts_t ts_t){
  * return MYSQL_RES with all the results
  */
 MYSQL_RES *find_sensor_later_timestamp(MYSQL *conn, sensor_ts_t ts_t){
-  return NULL;
-}
+  char buffer[512];
+  char date_buffer[26];
+  MYSQL_RES *data;
+  strftime(date_buffer, 26, "%Y-%m-%d %H:%M:%S", localtime(&ts_t));
+  sprintf(buffer, "SELECT * FROM jens_vangindertael WHERE timestamp > '%s'", date_buffer);
+  if(mysql_query(conn, buffer)){
+    fprintf(stderr, "%s\n", mysql_error(conn));
+    return NULL;
+  }
+  data = mysql_store_result(conn);
+  return data;}
 
 /*
  * Return the number of records contained in the result
  */
+
 int get_result_size(MYSQL_RES *result){
-  return 0;
+  return mysql_num_rows(result);
 }
 
 /*
