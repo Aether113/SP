@@ -19,5 +19,4 @@ typedef struct{
 	sensor_ts_t ts;
 }sensor_data_t, * sensor_data_ptr_t;
 
-
 #endif /* _CONFIG_H_ */

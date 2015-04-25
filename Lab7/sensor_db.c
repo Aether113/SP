@@ -72,6 +72,27 @@ int insert_sensor(MYSQL *conn, sensor_id_t id, sensor_value_t value, sensor_ts_t
  */
 
 int insert_sensor_from_file(MYSQL *conn, FILE *sensor_data){
+  unsigned char* buffer;
+  unsigned long len;
+
+  if (sensor_data == NULL){
+    fprintf(stderr, "Unable to open sensor_data");
+    return 1;
+  }
+
+  fseek(sensor_data, 0, SEEK_END);
+  len = ftell(sensor_data);
+  fseek(sensor_data, 0, SEEK_SET);
+
+  buffer = (char*)malloc(len+1);
+  if(buffer == NULL){
+    fprintf(stderr, "Memory allocation failed!");
+    fclose(sensor_data);
+    return 1;
+  }
+  int buffer_size = sizeof(*buffer);
+  fread(buffer,buffer_size,2,sensor_data);
+  printf("%s\n", buffer);
   return 0;
 }
 
@@ -156,7 +177,8 @@ MYSQL_RES *find_sensor_later_timestamp(MYSQL *conn, sensor_ts_t ts_t){
     return NULL;
   }
   data = mysql_store_result(conn);
-  return data;}
+  return data;
+}
 
 /*
  * Return the number of records contained in the result
@@ -169,6 +191,16 @@ int get_result_size(MYSQL_RES *result){
 /*
  * Print all the records contained in the result
  */
-void print_result(MYSQL_RES *result){
-
+void print_result(MYSQL_RES *result){       // http://stackoverflow.com/questions/270940/mysql-c-api-using-results
+  MYSQL_ROW row;
+  unsigned int num_fields, i;
+  num_fields = mysql_num_fields(result);
+  while((row = mysql_fetch_row(result))){
+    unsigned long *lengths;
+    lengths = mysql_fetch_lengths(result);
+    for(i = 0; i < num_fields; i++){
+      printf("[%.*s] ", (int) lengths[i], row[i] ? row[i] : "NULL");
+    }
+    printf("\n");
+  }
 }
