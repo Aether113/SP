@@ -18,12 +18,12 @@ MYSQL *init_connection(char clear_up_flag){
     fprintf(stderr, "%s\n", mysql_error(conn));
   }
 
-  if(mysql_real_connect(conn, "127.0.0.1", "root", "pwd","systeemprogrammatuur", 0, NULL, 0) == NULL){
+  if(mysql_real_connect(conn, "127.0.0.1", "systeemprogrammatuur", "jens_vangindertael","pwd", 0, NULL, 0) == NULL){
     fprintf(stderr, "%s\n", mysql_error(conn));
   }
 
   if(clear_up_flag == '1'){
-    if(mysql_query(conn, "DROP TABLE systeemprogrammatuur.jens_vangindertael;")){
+    if(mysql_query(conn, "DROP TABLE a13_syssoft.jens_vangindertael;")){
         fprintf(stderr, "%s\n", mysql_error(conn));
     }
 
@@ -72,7 +72,7 @@ int insert_sensor(MYSQL *conn, sensor_id_t id, sensor_value_t value, sensor_ts_t
  */
 
 int insert_sensor_from_file(MYSQL *conn, FILE *sensor_data){
-  unsigned char* buffer;
+  char* buffer;
   unsigned long len;
 
   if (sensor_data == NULL){
@@ -91,7 +91,7 @@ int insert_sensor_from_file(MYSQL *conn, FILE *sensor_data){
     return 1;
   }
   int buffer_size = sizeof(*buffer);
-  fread(buffer,buffer_size,2,sensor_data);
+  int count = fread(buffer,buffer_size,2,sensor_data);
   printf("%s\n", buffer);
   return 0;
 }
