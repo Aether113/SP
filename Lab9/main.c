@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include "myqueue.h"
 
@@ -59,9 +60,8 @@ int main( void )
  * Print 1 element to stdout.
  * If the defition of element_t changes, then this code needs to change as well.
  */
-void element_print(element_t element)
-{
-  // implementation goes here
+void element_print(element_t element){
+  //printf("%d\n", )
 }
 
 
@@ -70,16 +70,14 @@ void element_print(element_t element)
  * dest_element should point to allocated memory - no memory allocation will be done in this function
  * If the defition of element_t changes, then this code needs to change as well.
  */
-void element_copy(element_t *dest_element, element_t src_element)
-{
-  // implementation goes here
+void element_copy(element_t *dest_element, element_t src_element){
+  //element_t temp =
 }
 
 /*
  * Free the memory allocated to an element (if needed)
  * If the defition of element_t changes, then this code needs to change as well.
  */
-void element_free(element_t *element)
-{
-  // implementation goes here
+void element_free(element_t *element){
+  free((int*)*element);
 }

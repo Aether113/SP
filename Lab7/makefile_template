@@ -17,7 +17,7 @@ CFLAGS = -Wall -c $$(mysql_config --cflags)
 # you might add $$(mysql_config --libs) when using mysql connection (mind the double $$)
 LFLAGS = -Wall -L./$(LDIR) -Wl,-rpath=./$(LDIR) $$(mysql_config --libs)
 # basic gcc flags for compiling shared libraries
-CDFLAGS = -Wall -c -fPIC
+CDFLAGS = -Wall -c -fPICsta
 # basic gcc flags for linking shared libraries
 LDFLAGS = -Wall -shared
 
