@@ -13,7 +13,6 @@ int main()
 
   while(1)
   {
-
     double rand_temp = ((double)rand()/(double)RAND_MAX)*60-20;
     printf("Temperature = %.2f @ ", rand_temp);
     fflush(stdout);
