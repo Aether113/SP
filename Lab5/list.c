@@ -152,3 +152,8 @@ int list_get_index_of_element(list_ptr_t list, element_ptr_t element ){
   }
   return i;
 }
+
+void list_print(list_ptr_t list)
+{
+  printf("print");
+}

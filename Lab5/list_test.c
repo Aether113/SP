@@ -12,16 +12,15 @@ int list_errno;
  */
 void element_copy(element_ptr_t *dest_element, element_ptr_t src_element)
 {
-  //...
+  printf("copy");
 }
-
 
 /*
  * Clean up element, including freeing memory if needed
  */
 void element_free(element_ptr_t *element)
 {
-  // ...
+  printf("free");
 }
 
 /*
@@ -29,7 +28,7 @@ void element_free(element_ptr_t *element)
  */
 void element_print(element_ptr_t element)
 {
- // ...
+  printf("print");
 }
 
 /*
@@ -37,7 +36,7 @@ void element_print(element_ptr_t element)
  */
 int element_compare(element_ptr_t x, element_ptr_t y)
 {
-  // ...
+  return 0;
 }
 
 
