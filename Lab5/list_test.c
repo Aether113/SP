@@ -12,11 +12,7 @@ int list_errno;
  */
 void element_copy(element_ptr_t *dest_element, element_ptr_t src_element)
 {
-<<<<<<< HEAD
-
-=======
   //...
->>>>>>> 6d92853f9c44ca0dd2a9df60523b8d678cada7d3
 }
 
 
@@ -25,7 +21,7 @@ void element_copy(element_ptr_t *dest_element, element_ptr_t src_element)
  */
 void element_free(element_ptr_t *element)
 {
-<<<<<<< HEAD
+  // ...
 }
 
 /*
@@ -33,6 +29,7 @@ void element_free(element_ptr_t *element)
  */
 void element_print(element_ptr_t element)
 {
+ // ...
 }
 
 /*
@@ -40,26 +37,7 @@ void element_print(element_ptr_t element)
  */
 int element_compare(element_ptr_t x, element_ptr_t y)
 {
-  return 0;
-=======
   // ...
-}
-
-/*
- * Print 1 element to stdout. 
- */
-void element_print(element_ptr_t element)
-{
- // ...
-}
-
-/*
- * Compare two element elements; returns -1, 0 or 1 
- */
-int element_compare(element_ptr_t x, element_ptr_t y)
-{
-  // ...
->>>>>>> 6d92853f9c44ca0dd2a9df60523b8d678cada7d3
 }
 
 
@@ -190,11 +168,7 @@ START_TEST(test_ListGetReference)
   list = list_insert_at_index(list,c,-1);
   //ck_assert_msg(list_get_reference_at_index(list,0) == list, "Failure: expected address:<%p> but was %p\n", list, list_get_reference_at_index(list,0));
   ck_assert_msg(list_get_reference_at_index(list,0) != list_get_reference_at_index(list,1), "Failure: two elements with same reference");
-<<<<<<< HEAD
-  //long int interval = (long int)list_get_reference_at_index(list,1) - (long int)list_get_reference_at_index(list,0);
-=======
   long int interval = (long int)list_get_reference_at_index(list,1) - (long int)list_get_reference_at_index(list,0);
->>>>>>> 6d92853f9c44ca0dd2a9df60523b8d678cada7d3
   //ck_assert_msg(list_get_reference_at_index(list,10) == ((void*)list)+2*interval, "Failure: expected address:<%p> but was %p\n", ((void*)list)+2*interval, list_get_reference_at_index(list,10));
   list_free(&list);
 }
@@ -216,17 +190,9 @@ int main(void)
     tcase_add_test(tc1_1, test_ListGetReference);
 
     srunner_run_all(sr, CK_NORMAL);
-<<<<<<< HEAD
 
-=======
-   
->>>>>>> 6d92853f9c44ca0dd2a9df60523b8d678cada7d3
     nf = srunner_ntests_failed(sr);
     srunner_free(sr);
 
     return nf == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6d92853f9c44ca0dd2a9df60523b8d678cada7d3

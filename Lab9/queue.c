@@ -28,7 +28,6 @@ struct queue {
 * mutex for locking the circular queue
 */
 
-pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void pthread_err_handler( int err_code, char *msg, char *file_name, char line_nr ){
 	if (err_code != 0){
@@ -54,8 +53,6 @@ queue_t* queue_create(){
   queue -> queue_lock = PTHREAD_MUTEX_INITIALIZER;
   queue -> dequeue_lock = PTHREAD_MUTEX_INITIALIZER;
 
-  pthread_mutex_init((&queue->queue_lock), NULL);
-  pthread_mutex_init((&queue->dequeue_lock), NULL);
 
   return queue;
 }
@@ -96,7 +93,6 @@ void queue_enqueue(queue_t* queue, element_t element)     // inspiration for alg
 
     queue->arr[queue->rear] = element;
     queue->current_size++;
-    pthread_mutex_unlock(&((queue)->queue_lock));
   }
 }
 
