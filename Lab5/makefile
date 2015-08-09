@@ -1,4 +1,4 @@
-CFLAGS = -Wall -c
+CFLAGS = -Wall -c -g
 LFLAGS = -Wall
 CC = gcc
 OBJS = list.o

@@ -5,8 +5,6 @@
 
 list_ptr_t list = NULL;
 
-int list_errno;
-
 /*
  * Copy the 'content' of src_element to dst_element.
  */
@@ -63,8 +61,8 @@ START_TEST(test_ListInsert)
   *c = 9;
   list_ptr_t list = NULL;
   list = list_create( &element_copy, &element_free, &element_compare, &element_print);
-  list_insert_at_index(NULL,a,0);
-  ck_assert_msg(list_errno != 0,"Failure: unexpected error: %d\n",list_errno);
+  //list_insert_at_index(NULL,a,0);
+  //ck_assert_msg(list_errno != 0,"Failure: unexpected error: %d\n",list_errno);
   list = list_insert_at_index(list,a,0);
   ck_assert_msg(list_errno == 0,"Failure: unexpected error: %d\n",list_errno);
   ck_assert_msg(list_size(list) == 1, "Failure: expected size:<1> but was %d\n",list_size(list));
