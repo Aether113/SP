@@ -5,6 +5,10 @@
 struct list{
   int size;
   list_node_ptr_t first_node;
+  void * free;
+  void * copy;
+  void * compare;
+  void * print;
 };
 
 struct list_node{
@@ -30,30 +34,25 @@ list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments
 
   list->size = 0;
   list->first_node = NULL;
-  //list->free = element_free;
-  //list->copy = element_copy;
-  //list->compare = element_compare;
-  //list->print = element_print;
+  list->free = element_free;
+  list->copy = element_copy;
+  list->compare = element_compare;
+  list->print = element_print;
   return list;
 }
 
 void list_free( list_ptr_t* list ){
-  //vanachter beginnen
-  list_node_ptr_t current_node = (*list)->first_node;
-  printf("Plaats 1");
-  while(current_node->next != NULL){
-    current_node = current_node->next;
-  }
-  printf("Plaats 2");
-
-  while(current_node->prev != NULL){
-    current_node = current_node->prev;
-    free((current_node)->next);
+  int i;
+  for(i = 0; i <= (*list)->size-1; i++){
+    list_free_at_index(*list, i);
   }
 
-  free(current_node);
+  if(list_errno == 2){
+    //list was empty, so list_free_at_index() set errno to LIST_EMPTY_ERROR;
+    list_errno = LIST_NO_ERROR;
+  }
+
   free(*list);
-
   *list = NULL;
 }
 
@@ -112,15 +111,68 @@ list_ptr_t list_insert_at_index( list_ptr_t list, element_ptr_t element, int ind
 }
 
 list_ptr_t list_remove_at_index( list_ptr_t list, int index){
-  return NULL;
+  if(list == NULL){
+    list_errno = LIST_INVALID_ERROR;
+    return NULL;
+  }
+
+  if(list->size == 0){
+    list_errno = LIST_EMPTY_ERROR;
+    return list;
+  }
+
+  if(index <= 0){
+    //remove first_node
+    list->first_node->next->prev = NULL;
+    list->first_node = list->first_node->next;
+    list->size--;
+
+  }
+
+  else if(index >= (list->size - 1)){
+      list_node_ptr_t last_node = list_get_reference_at_index(list, index);
+      if(last_node->prev == NULL){
+        list->first_node = NULL;
+      }
+      else{
+        last_node->prev->next = NULL;
+      }
+      last_node->prev = NULL;
+      list->size--;
+    }
+
+  else{
+    list_node_ptr_t current_node = list_get_reference_at_index(list, index);
+    current_node->next->prev = current_node->prev;
+    current_node->prev->next = current_node->next;
+    list->size--;
+  }
+  return list;
 }
 
 list_ptr_t list_free_at_index( list_ptr_t list, int index){
-  return NULL;
+  if(list == NULL){
+    list_errno = LIST_INVALID_ERROR;
+    return NULL;
+  }
+
+  if(list->size == 0){
+    list_errno = LIST_EMPTY_ERROR;
+    return list;
+  }
+
+  list_node_ptr_t current_node = list_get_reference_at_index(list, index);
+  list = list_remove_at_index(list, index);
+  free(current_node);
+  return list;
 }
 
-//index 2 gaf de eerste terug
 list_node_ptr_t list_get_reference_at_index( list_ptr_t list, int index ){
+
+  if(list == NULL){
+    list_errno = LIST_INVALID_ERROR;
+    return NULL;
+  }
 
   if(index <= 0){
     return list->first_node;
@@ -147,36 +199,33 @@ list_node_ptr_t list_get_reference_at_index( list_ptr_t list, int index ){
 }
 
 element_ptr_t list_get_element_at_index( list_ptr_t list, int index ){
-  int i;
-  list_node_ptr_t current_node = list->first_node;
-  if(index <= 0){
-    return current_node->data;
+  list_node_ptr_t temp = list_get_reference_at_index(list, index);
+  if(list == NULL){
+    return NULL;
   }
 
-  else if(index >= (list->size-1)){
-    while(current_node->next != NULL){
-      current_node = current_node->next;
-    }
-    return current_node->data;
-  }
-
-  else{
-    for(i = 0; i < index; i++){
-      current_node = current_node->next;
-    }
-    return current_node->data;
-  }
-  return NULL;
+  return temp->data;
 }
 
 int list_get_index_of_element(list_ptr_t list, element_ptr_t element ){
-  int i = 0;
-  list_node_ptr_t current_node = list->first_node;
-  while(current_node->data != element){
-    current_node = current_node->next;
-    i++;
+
+  if(list == NULL){
+    list_errno = LIST_INVALID_ERROR;
+    return -1;
   }
-  return i;
+
+  if(list->first_node == NULL){
+    return -1;
+  }
+
+  list_node_ptr_t current_node = list->first_node;
+  int i;
+  for(i = 0; i <= list->size-1; i++){
+    if(list_get_element_at_index(list, i) == element){
+      return i;
+    }
+  }
+  return -1;
 }
 
 void list_print(list_ptr_t list){
