@@ -17,7 +17,7 @@ struct list_node{
   list_node_ptr_t prev;
 };
 
-int list_errno = 0;
+int list_errno = LIST_NO_ERROR;
 
 list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments)
         void (*element_copy)(element_ptr_t *dest_element, element_ptr_t src_element),
@@ -38,20 +38,21 @@ list_ptr_t list_create 	( // callback functions (ptr_to_callback_func)(arguments
   list->copy = element_copy;
   list->compare = element_compare;
   list->print = element_print;
+
   return list;
 }
 
-void list_free( list_ptr_t* list ){
+void list_free(list_ptr_t* list){
   int i;
   for(i = 0; i <= (*list)->size-1; i++){
     list_free_at_index(*list, i);
   }
 
-  if(list_errno == 2){
-    //list was empty, so list_free_at_index() set errno to LIST_EMPTY_ERROR;
+  if(list_errno == LIST_EMPTY_ERROR){
+    //List was empty, so list_free_at_index() has set errno to LIST_EMPTY_ERROR;
+    //Bypass the error.
     list_errno = LIST_NO_ERROR;
   }
-
   free(*list);
   *list = NULL;
 }
@@ -71,7 +72,6 @@ list_ptr_t list_insert_at_index( list_ptr_t list, element_ptr_t element, int ind
     return NULL;
   }
 
-  //eerste node
   if(list->size <= 0){
     new_node->next = NULL;
     new_node->prev = NULL;
@@ -91,6 +91,7 @@ list_ptr_t list_insert_at_index( list_ptr_t list, element_ptr_t element, int ind
   }
 
   else{
+
     list_node_ptr_t current_node = list_get_reference_at_index(list, index);
     if(index <= 0){
       new_node->next = list->first_node;
@@ -203,7 +204,6 @@ element_ptr_t list_get_element_at_index( list_ptr_t list, int index ){
   if(list == NULL){
     return NULL;
   }
-
   return temp->data;
 }
 
@@ -215,10 +215,10 @@ int list_get_index_of_element(list_ptr_t list, element_ptr_t element ){
   }
 
   if(list->first_node == NULL){
+    list_errno = LIST_EMPTY_ERROR;
     return -1;
   }
 
-  list_node_ptr_t current_node = list->first_node;
   int i;
   for(i = 0; i <= list->size-1; i++){
     if(list_get_element_at_index(list, i) == element){
