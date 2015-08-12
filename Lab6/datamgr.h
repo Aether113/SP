@@ -1,8 +1,7 @@
 #ifndef DATAMGR_H_
 #define DATAMGR_H_
 
-#define MAP_FILE "room_sensor.map"
-#define SENSOR_FILE "sensor_data"
+#include <time.h>
 
 extern int list_errno;
 
@@ -15,6 +14,12 @@ extern int list_errno;
 #define LIST_EMPTY_ERROR 2  //error due to an operation that can't be executed on an empty list
 #define LIST_INVALID_ERROR 3 //error due to a list operation applied on a NULL list
 
+#define MAP_FILE "room_sensor.map"
+#define SENSOR_FILE "sensor_data"
+
+#define SET_MIN_TEMP 18.0
+#define SET_MAX_TEMP 25.0
+
 typedef struct element element_t; //element_t is a stuct containing room id, sensor id, running_avg and timestamp last_modified
 typedef element_t* element_ptr_t;
 
@@ -24,6 +29,8 @@ typedef list_t *list_ptr_t;
 typedef struct list_node list_node_t;
 typedef list_node_t *list_node_ptr_t;
 
+typedef struct running_avg running_avg_t;
+typedef running_avg_t * running_avg_ptr_t;
 
 list_ptr_t list_create 	( // callback functions
 			  /*void (*element_copy)(element_ptr_t *dest_element, element_ptr_t src_element),
@@ -84,5 +91,14 @@ void read_room_map(list_ptr_t list);
 //reads the room_sensor.map file and generates a list
 
 void print_sensor_data();
+//prints all the sensor data (in ascii) from the sensor data file
+
+void parse_sensor_data();
+//updates running_avg and last_modified in the list structure
+
+int update_sensor_node(list_ptr_t list, unsigned int sensor_id, float temp, time_t last_modified);
+//finds the correct sensor id and updates its running_avg temperature.
+//if running_avg is to low or to high, an error message is send to stderr
+//return 0 for succes, sth else for fail
 
 #endif  //LIST_H_
